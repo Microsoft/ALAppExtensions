@@ -11,6 +11,8 @@ Use this module to do the following:
 - Generate a hash from a string or a stream based on the provided hash algorithm.
 - Generate a keyed hash or a keyed base64 encoded hash from a string based on provided hash algorithm and key.
 - Generate a base64 encoded hash or a keyed base64 encoded hash from a string based on provided hash algorithm.
+- Generate a Self Signed X509 certificate.
+- Generate a X509 certificate signing request (CSR).
 
 Advanced Encryption Standard functionality:
 - Initialize a new instance of the RijndaelManaged class with default values.
@@ -1114,6 +1116,164 @@ Certificate Password
 *CertPropertyJson ([Text](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/text/text-data-type))* 
 
 Certificate details in json
+
+## CertificateRequest (Codeunit 1296)
+
+Provides helper functions to work with the CertificateRequest class.
+ 
+
+### InitializeRSA (Method) <a name="InitializeRSA"></a> 
+
+Initializes a new instance of RSACryptoServiceProvider class with the specified key size and returns the key as a xml string.
+
+#### Syntax
+```
+procedure InitializeRSA(KeySize: Integer; IncludePrivateParameters: Boolean; var KeyAsXmlString: Text)
+```
+#### Parameters
+*KeySize ([Integer](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/integer/integer-data-type))* 
+
+The size of the created key in bits.
+
+*IncludePrivateParameters ([Boolean](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/boolean/boolean-data-type))* 
+
+true to include a public and private RSA key in KeyAsXmlString; false to include only the public key.
+
+*KeyAsXmlString ([Text](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/text/text-data-type))*
+
+Returns an XML string containing the key of the created RSA object.
+
+### InitializeCertificateRequestUsingRSA (Method) <a name="InitializeCertificateRequestUsingRSA"></a> 
+
+Initializes a new instance of the CertificateRequest class with the specified parameters and the initialized RSA key.
+
+#### Syntax
+```
+procedure InitializeCertificateRequestUsingRSA(SubjectName: Text; HashAlgorithm: Enum "Hash Algorithm"; RSASignaturePaddingMode: Enum "RSA Signature Padding")
+```
+
+#### Parameters
+*SubjectName ([Text](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/text/text-data-type))*
+
+The string representation of the subject name for the certificate or certificate request.
+
+*HashAlgorithm ([Enum "Hash Algorithm"]())*
+
+The hash algorithm to use when signing the certificate or certificate request.</param>
+
+*RSASignaturePaddingMode ([Enum "RSA Signature Padding"]())*
+
+The RSA signature padding to apply if self-signing or being signed with an X509Certificate2.
+
+
+### AddX509BasicConstraintToCertificateRequest (Method) <a name="AddX509BasicConstraintToCertificateRequest"></a> 
+Adds a X509BasicConstraint to the Certificate Request. See [X509BasicConstraintsExtension](https://docs.microsoft.com/en-us/dotnet/api/system.security.cryptography.x509certificates.x509basicconstraintsextension).
+
+#### Syntax
+```
+procedure AddX509BasicConstraintToCertificateRequest(CertificateAuthority: Boolean; HasPathLengthConstraint: Boolean; PathLengthConstraint: Integer; Critical: Boolean)
+```
+
+#### Parameters
+
+*CertificateAuthority ([Boolean](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/boolean/boolean-data-type))*
+
+true if the certificate is a certificate authority (CA) certificate; otherwise, false.
+
+*HasPathLengthConstraint ([Boolean](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/boolean/boolean-data-type))*
+
+true if the certificate has a restriction on the number of path levels it allows; otherwise, false.
+
+*PathLengthConstraint ([Integer](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/integer/integer-data-type))*
+
+The number of levels allowed in a certificate's path.
+
+*Critical ([Boolean](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/boolean/boolean-data-type))*
+
+true if the extension is critical; otherwise, false.
+
+
+### AddX509EnhancedKeyUsageToCertificateRequest (Method) <a name="AddX509EnhancedKeyUsageToCertificateRequest"></a>
+
+Adds a X509EnhancedKeyUsage to the Certificate Request. See [X509EnhancedKeyUsageExtension](https://docs.microsoft.com/en-us/dotnet/api/system.security.cryptography.x509certificates.x509enhancedkeyusageextension).
+
+#### Syntax
+```
+procedure AddX509EnhancedKeyUsageToCertificateRequest(OidValues: List of [Text]; Critical: Boolean)
+```
+
+#### Parameters
+
+*OidValues ([List of [Text]](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/list/list-data-type))*
+
+List of Oid values (for example '1.3.6.1.5.5.7.3.2') to add.
+
+*Critical ([Boolean](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/boolean/boolean-data-type))*
+
+true if the extension is critical; otherwise, false.
+
+### AddX509KeyUsageToCertificateRequest (Method) <a name="AddX509KeyUsageToCertificateRequest"></a>
+
+Adds a X509KeyUsage to the Certificate Request. See [X509KeyUsageExtension](https://docs.microsoft.com/en-us/dotnet/api/system.security.cryptography.x509certificates.x509keyusageextension).
+
+#### Syntax
+```
+procedure AddX509KeyUsageToCertificateRequest(X509KeyUsageFlags: Integer; Critical: Boolean)
+```
+
+#### Parameters
+
+*X509KeyUsageFlags ([Integer](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/integer/integer-data-type))*
+
+The sum of all flag values that are to be added. See [X509KeyUsageFlags](https://docs.microsoft.com/en-us/dotnet/api/system.security.cryptography.x509certificates.x509keyusageflags).
+
+*Critical ([Boolean](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/boolean/boolean-data-type))*
+
+true if the extension is critical; otherwise, false.
+
+
+### CreateSigningRequest (Method) <a name="CreateSigningRequest"></a>
+
+Creates an ASN.1 DER-encoded PKCS#10 CertificationRequest and returns a Base 64 encoded string.
+
+#### Syntax
+```
+procedure CreateSigningRequest(var SigningRequestPemString: Text)
+```
+
+#### Parameters
+
+*SigningRequestBase64 ([Text](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/text/text-data-type))*
+
+Returns the SigningRequest in Base 64 string format.
+
+
+### CreateSelfSigned (Method) <a name="CreateSelfSigned"></a>
+
+Creates a self-signed certificate using the established subject, key, and optional extensions and returns it as a Base64 text.
+
+#### Syntax
+```
+procedure CreateSelfSigned(NotBefore: DateTime; NotAfter: DateTime; X509ContentType: Enum "X509 Content Type"; var CertBase64Value: Text)
+```
+
+#### Parameters
+
+*NotBefore ([DateTime](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/datetime/datetime-data-type))*
+
+The oldest date and time when this certificate is considered valid.
+
+*NotAfter ([DateTime](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/datetime/datetime-data-type))*
+
+The date and time when this certificate is no longer considered valid.
+
+*X509ContentType ([Enum "X509 Content Type"]())* 
+
+Specifies the format of an X.509 certificate
+
+*CertBase64Value ([Text](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/text/text-data-type))* 
+
+Represents the certificate value encoded using the Base64 algorithm
 
 
 ## Data Encryption Management (Page 9905)

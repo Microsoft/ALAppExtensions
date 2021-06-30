@@ -18,5 +18,22 @@ dotnet
         type("System.Security.Cryptography.SHA1Managed"; "SHA1Managed") { }
         type("System.Security.Cryptography.SymmetricAlgorithm"; "Cryptography.SymmetricAlgorithm") { }
         type("System.Security.Cryptography.DESCryptoServiceProvider"; "Cryptography.DESCryptoServiceProvider") { }
+        type("System.Security.Cryptography.RSASignaturePadding"; RSASignaturePadding) { }
     }
+
+    assembly("System")
+    {
+        type("System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension"; X509BasicConstraintsExtension) { }
+        type("System.Security.Cryptography.X509Certificates.X509EnhancedKeyUsageExtension"; X509EnhancedKeyUsageExtension) { }
+        type("System.Security.Cryptography.X509Certificates.X509KeyUsageExtension"; X509KeyUsageExtension) { }
+        type("System.Security.Cryptography.X509Certificates.X509KeyUsageFlags"; X509KeyUsageFlags) { }
+        type("System.Security.Cryptography.OidCollection"; OidCollection) { }
+        type("System.Security.Cryptography.Oid"; Oid) { }
+    }
+
+    assembly("System.Core")
+    {
+        type("System.Security.Cryptography.X509Certificates.CertificateRequest"; CertificateRequest) { }
+    }
+
 }
