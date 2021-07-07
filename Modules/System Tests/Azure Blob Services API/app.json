@@ -1,0 +1,52 @@
+{
+    "id": "d80e9dc1-c590-422c-aa4a-0b4b44848e8e",
+    "name": "Azure Blob Services API Test",
+    "publisher": "Microsoft",
+    "version": "1.0.0.0",
+    "brief": "Reproduces the Azure Blob service REST API",
+    "description": "Provides a set of AL functionality and Helper libraries to make use of Azure Blob Storage in MSDyn365BC",
+    "privacyStatement": "https://go.microsoft.com/fwlink/?linkid=724009",
+    "EULA": "https://go.microsoft.com/fwlink/?linkid=2009120",
+    "help": "https://go.microsoft.com/fwlink/?linkid=2103698",
+    "url": "https://go.microsoft.com/fwlink/?linkid=724011",
+    "logo": "",
+    "dependencies": [
+          {
+              "id": "e409d343-14fa-42a4-a1be-fec499383e59",
+              "name": "Azure Storage Services Auth. Helper",
+              "publisher": "Microsoft",
+              "version": "1.0.0.0"
+          },
+          {
+              "id": "8047d691-d376-4570-bfe6-9e0d785b8f32",
+              "name": "Azure Blob Services API",
+              "publisher": "Microsoft",
+              "version": "1.0.0.0"
+          },
+          {
+              "id":  "dd0be2ea-f733-4d65-bb34-a28f4624fb14",
+              "publisher":  "Microsoft",
+              "name":  "Library Assert",
+              "version":  "1.0.0.0"
+          },
+          {
+              "id":  "e7320ebb-08b3-4406-b1ec-b4927d3e280b",
+              "publisher":  "Microsoft",
+              "name":  "Any",
+              "version":  "18.0.0.0"
+          }
+    ],
+    "screenshots": [],
+    "features": [],
+    "platform": "18.0.0.0",
+    "application": "18.0.0.0",
+    "idRanges": [
+      {
+        "from": 88150,
+        "to": 88199
+      }
+    ],
+    "contextSensitiveHelpUrl": "https://docs.microsoft.com/dynamics365/business-central/",
+    "showMyCode": true,
+    "runtime": "7.0"
+  }

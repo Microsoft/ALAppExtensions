@@ -50,4 +50,19 @@ enum 1289 "Http Request Type"
         Caption = 'DELETE', Locked = true;
     }
 
+    /// <summary>
+    /// Specifies that the Http request type is HEAD.
+    /// </summary>
+    value(5; HEAD)
+    {
+        Caption = 'HEAD', Locked = true;;
+    }
+
+    /// <summary>
+    /// Specifies that the Http request type is OPTIONS.
+    /// </summary>
+    value(6; OPTIONS)
+    {
+        Caption = 'OPTIONS', Locked = true;;
+    }
 }
