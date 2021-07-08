@@ -12,19 +12,25 @@ codeunit 4507 "Email - OAuth Client" implements "Email - OAuth Client"
     [NonDebuggable]
     procedure GetAccessToken(var AccessToken: Text)
     begin
-        TryGetAccessTokenInternal(AccessToken);
+        TryGetAccessTokenInternal(AccessToken, false);
     end;
 
     [NonDebuggable]
     procedure TryGetAccessToken(var AccessToken: Text): Boolean
     begin
-        exit(TryGetAccessTokenInternal(AccessToken));
+        exit(TryGetAccessToken(AccessToken, false));
+    end;
+
+    [NonDebuggable]
+    procedure TryGetAccessToken(var AccessToken: Text; Force: Boolean): Boolean
+    begin
+        exit(TryGetAccessTokenInternal(AccessToken, Force));
     end;
 
     // Interfaces do not support properties for the procedures, so using an internal function
     [TryFunction]
     [NonDebuggable]
-    local procedure TryGetAccessTokenInternal(var AccessToken: Text)
+    local procedure TryGetAccessTokenInternal(var AccessToken: Text; Force: Boolean)
     var
         EnvironmentInformation: Codeunit "Environment Information";
         OAuthErr: Text;
@@ -34,8 +40,8 @@ codeunit 4507 "Email - OAuth Client" implements "Email - OAuth Client"
                 if OAuth2.AcquireOnBehalfOfToken('', GraphResourceURLTxt, AccessToken) then;
         end else begin
             Initialize();
-            if (not OAuth2.AcquireAuthorizationCodeTokenFromCache(ClientId, ClientSecret, RedirectURL, OAuthAuthorityUrlTxt, GraphResourceURLTxt, AccessToken)) or (AccessToken = '') then
-                OAuth2.AcquireTokenByAuthorizationCode(ClientId, ClientSecret, OAuthAuthorityUrlTxt, RedirectURL, GraphResourceURLTxt, Enum::"Prompt Interaction"::None, AccessToken, OAuthErr);
+            if (not OAuth2.AcquireAuthorizationCodeTokenFromCache(ClientId, ClientSecret, RedirectURL, StrSubstNo(OAuthAuthorityUrlTxt, TenantId), GraphResourceURLTxt, AccessToken)) or (AccessToken = '') or Force then
+                OAuth2.AcquireTokenByAuthorizationCode(ClientId, ClientSecret, StrSubstNo(OAuthAuthorityUrlTxt, TenantId), StrSubstNo(RedirectURL, TenantId), GraphResourceURLTxt, Enum::"Prompt Interaction"::None, AccessToken, OAuthErr);
         end;
 
         if AccessToken = '' then
@@ -55,6 +61,7 @@ codeunit 4507 "Email - OAuth Client" implements "Email - OAuth Client"
             RedirectURL := EmailOutlookAPIHelper.GetRedirectURL();
             if RedirectURL = '' then
                 OAuth2.GetDefaultRedirectUrl(RedirectURL);
+            TenantId := EmailOutlookAPIHelper.GetTenantID();
         end;
 
         IsInitialized := true;
@@ -133,7 +140,7 @@ codeunit 4507 "Email - OAuth Client" implements "Email - OAuth Client"
         AccessToken: Text;
         TokenCache: Text;
     begin
-        if not OAuth2.AcquireOnBehalfAccessTokenAndTokenCache(OAuthAuthorityUrlTxt, '', GraphResourceURLTxt, AccessToken, TokenCache) then begin
+        if not OAuth2.AcquireOnBehalfAccessTokenAndTokenCache(StrSubstNo(OAuthAuthorityUrlTxt, TenantId), '', GraphResourceURLTxt, AccessToken, TokenCache) then begin
             Session.LogMessage('000040E', StrSubstNo(CouldNotAcquireOnBehalfOfAccessTokenErr, UserSecurityId()), Verbosity::Error, DataClassification::EndUserPseudonymousIdentifiers, TelemetryScope::ExtensionPublisher, 'Category', EmailCategoryLbl);
             exit(false);
         end else
@@ -162,7 +169,7 @@ codeunit 4507 "Email - OAuth Client" implements "Email - OAuth Client"
         AccessToken: Text;
     begin
         Initialize();
-        exit(OAuth2.AcquireAuthorizationCodeTokenFromCache(ClientId, ClientSecret, RedirectURL, OAuthAuthorityUrlTxt, GraphResourceURLTxt, AccessToken) and (AccessToken <> ''))
+        exit(OAuth2.AcquireAuthorizationCodeTokenFromCache(ClientId, ClientSecret, RedirectURL, StrSubstNo(OAuthAuthorityUrlTxt, TenantId), GraphResourceURLTxt, AccessToken) and (AccessToken <> ''))
     end;
 
     internal procedure SignInUsingAuthorizationCode(): Boolean
@@ -172,19 +179,20 @@ codeunit 4507 "Email - OAuth Client" implements "Email - OAuth Client"
         OAuthErr: Text;
     begin
         Initialize();
-        exit(OAuth2.AcquireTokenByAuthorizationCode(ClientID, ClientSecret, OAuthAuthorityUrlTxt, RedirectURL, GraphResourceURLTxt, Enum::"Prompt Interaction"::"Select Account", AccessToken, OAuthErr) and (AccessToken <> ''));
+        exit(OAuth2.AcquireTokenByAuthorizationCode(ClientID, ClientSecret, StrSubstNo(OAuthAuthorityUrlTxt, TenantId), RedirectURL, GraphResourceURLTxt, Enum::"Prompt Interaction"::"Select Account", AccessToken, OAuthErr) and (AccessToken <> ''));
     end;
 
     var
         OAuth2: Codeunit OAuth2;
-
+        
         [NonDebuggable]
         ClientId: Text;
         [NonDebuggable]
         ClientSecret: Text;
         RedirectURL: Text;
         IsInitialized: Boolean;
-        OAuthAuthorityUrlTxt: Label 'https://login.microsoftonline.com/common/oauth2', Locked = true;
+        TenantId: Text;
+        OAuthAuthorityUrlTxt: Label 'https://login.microsoftonline.com/%1/oauth2', Locked = true;
         GraphResourceURLTxt: Label 'https://graph.microsoft.com/', Locked = true;
         TokenCacheTok: Label 'TokenCache', Locked = true;
         CouldNotGetAccessTokenErr: Label 'Could not get access token. Please, try to log out and log in again.';

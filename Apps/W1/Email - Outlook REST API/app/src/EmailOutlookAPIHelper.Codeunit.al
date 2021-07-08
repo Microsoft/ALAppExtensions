@@ -197,6 +197,14 @@ codeunit 4509 "Email - Outlook API Helper"
             exit(Setup.RedirectURL);
     end;
 
+    procedure GetTenantID(): Text
+    var
+        Setup: Record "Email - Outlook API Setup";
+    begin
+        if Setup.Get() then
+            exit(Setup.TenantID);
+    end;
+
     procedure IsAzureAppRegistrationSetup(): Boolean
     var
         Setup: Record "Email - Outlook API Setup";

@@ -112,6 +112,13 @@ page 4509 "Email - Outlook API Setup"
                             ValidateUri(Rec.RedirectURL);
                         end;
                     }
+
+                    field(TenantID; Rec.TenantID)
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the Tenant ID.';
+                        Caption = 'Tenant ID';
+                    }
                 }
             }
         }
@@ -187,6 +194,7 @@ page 4509 "Email - Outlook API Setup"
                     Rec.ClientId := DummyGuid;
                     Rec.ClientSecret := DummyGuid;
                     Rec.RedirectURL := '';
+                    Rec.TenantID := '';
                     ClientSecretText := '';
                     ClientIdText := '';
 
@@ -215,6 +223,11 @@ page 4509 "Email - Outlook API Setup"
         if Rec.RedirectURL = '' then begin
             OAuth2.GetDefaultRedirectUrl(RedirectURLTxt);
             Rec.RedirectURL := CopyStr(RedirectURLTxt, 1, MaxStrLen(Rec.RedirectURL));
+            Rec.Modify();
+        end;
+
+        if Rec.TenantID = '' then begin
+            Rec.TenantID := CopyStr(DefaultTenantId, 1, MaxStrLen(Rec.TenantID));
             Rec.Modify();
         end;
 
@@ -249,7 +262,7 @@ page 4509 "Email - Outlook API Setup"
         [NonDebuggable]
         AccessToken: Text;
     begin
-        if not EmailOAuthClient.TryGetAccessToken(AccessToken) then
+        if not EmailOAuthClient.TryGetAccessToken(AccessToken, true) then
             Message(UnsuccessfulTestMsg)
         else
             Message(SuccessfulTestMsg);
@@ -268,6 +281,7 @@ page 4509 "Email - Outlook API Setup"
         UnsuccessfulTestMsg: Label 'We could not get access token with the current setup.\\Please verify the values on the page and try again.';
         SuccessfulTestMsg: Label 'Success! Your authentication was verified.';
         HiddenValueTxt: Label '******', Locked = true;
+        DefaultTenantId: Label 'Common', Locked = true;
         TopBannerVisible: Boolean;
         [InDataSet]
         IsUserLoggedIn: Boolean;

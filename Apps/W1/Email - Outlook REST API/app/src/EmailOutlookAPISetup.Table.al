@@ -29,6 +29,12 @@ table 4509 "Email - Outlook API Setup"
             Caption = 'Redirect URL';
             DataClassification = CustomerContent;
         }
+        field(5; TenantID; Text[36])
+        {
+            Caption = 'TenantID';
+            DataClassification = CustomerContent;
+            InitValue = 'Common';
+        }
     }
 
     keys
