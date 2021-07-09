@@ -1,0 +1,99 @@
+{
+    "id":  "b77d712a-cc62-452c-ba8b-e6b2beb2e117",
+    "name":  "Addressbook",
+    "publisher":  "Microsoft",
+    "brief":  "Provides the user with an addressbook for Business Central.",
+    "description":  "Provides the user with an addressbook for Business Central.",
+    "version":  "18.3.0.0",
+    "privacyStatement":  "https://go.microsoft.com/fwlink/?linkid=724009",
+    "EULA":  "https://go.microsoft.com/fwlink/?linkid=2009120",
+    "help":  "https://go.microsoft.com/fwlink/?linkid=2103698",
+    "url":  "https://go.microsoft.com/fwlink/?linkid=724011",
+    "logo":  "",
+    "dependencies":  [
+                         {
+                             "id":  "7e3b999e-1182-45d2-8b82-d5127ddba9b2",
+                             "name":  "DotNet Aliases",
+                             "publisher":  "Microsoft",
+                             "version":  "18.3.0.0"
+                         },
+                         {
+                             "id":  "872fe7e8-9893-40ae-ab94-c123ed30fdbd",
+                             "name":  "Extension Management",
+                             "publisher":  "Microsoft",
+                             "version":  "18.3.0.0"
+                         },
+                         {
+                             "id":  "e31ad830-3d46-472e-afeb-1d3d35247943",
+                             "name":  "BLOB Storage",
+                             "publisher":  "Microsoft",
+                             "version":  "18.3.0.0"
+                         },
+                         {
+                             "id":  "0846d207-5dec-4c1b-afd8-6a25e1e14b9d",
+                             "name":  "Base64 Convert",
+                             "publisher":  "Microsoft",
+                             "version":  "18.3.0.0"
+                         },
+                         {
+                             "id":  "a4584a53-9345-458a-af20-d1df2fab7bd8",
+                             "name":  "Confirm Management",
+                             "publisher":  "Microsoft",
+                             "version":  "18.3.0.0"
+                         },
+                         {
+                             "id":  "b3670666-3f31-4664-8531-a1cb0bdf69fd",
+                             "name":  "Sandbox Cleanup",
+                             "publisher":  "Microsoft",
+                             "version":  "18.3.0.0"
+                         },
+                         {
+                             "id":  "a8177fd4-0adb-4482-889c-2e123a13b50a",
+                             "name":  "Retention Policy",
+                             "publisher":  "Microsoft",
+                             "version":  "18.3.0.0"
+                         },
+                         {
+                             "id":  "93b83ef6-9666-4c1d-b130-c232f4047621",
+                             "name":  "Upgrade Tags",
+                             "publisher":  "Microsoft",
+                             "version":  "18.3.0.0"
+                         },
+                         {
+                             "id":  "2955a828-6c0a-4d51-a1b8-a4cf2a040b9a",
+                             "name":  "System Initialization",
+                             "publisher":  "Microsoft",
+                             "version":  "18.3.0.0"
+                         },
+                         {
+                             "id":  "7f3d7c69-3ffc-4201-b2b9-9f7cd56f7c50",
+                             "name":  "Client Type Management",
+                             "publisher":  "Microsoft",
+                             "version":  "18.3.0.0"
+                         }
+                     ],
+    "internalsVisibleTo":  [
+                               {
+                                   "id":  "eb303ff1-7a68-45b5-b7de-bf6965244dd7",
+                                   "name":  "Email Test",
+                                   "publisher":  "Microsoft"
+                               },
+                               {
+                                   "id":  "949b9041-d2cb-4e69-bf31-c1e8fcb9462b",
+                                   "name":  "Email Test Library",
+                                   "publisher":  "Microsoft"
+                               }
+                           ],
+    "screenshots":  [
+
+                    ],
+    "platform":  "18.0.0.0",
+    "idRanges":  [
+                     {
+                         "from":  1,
+                         "to":  10000
+                     }
+                 ],
+    "target":  "OnPrem",
+    "contextSensitiveHelpUrl":  "https://go.microsoft.com/fwlink/?linkid=2134520"
+}
